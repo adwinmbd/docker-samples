@@ -1,0 +1,34 @@
+version: "3"
+networks:
+  loki:
+services:
+  loki:
+    image: grafana/loki:1.6.0
+    container_name: loki
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - loki
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config/loki.yml:/etc/grafana/provisioning/datasources/loki.yml
+    networks:
+      - loki
+  app:
+    image: alpine:latest
+    container_name: houdini
+    entrypoint: ping localhost
+    logging:
+      driver: loki
+      options:
+        # loki-url: "http://localhost:3100/api/prom/push"
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+    networks:
+      - loki

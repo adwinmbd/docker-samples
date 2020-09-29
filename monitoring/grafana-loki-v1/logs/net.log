@@ -1,0 +1,3 @@
+user@host> show log messages
+Apr 25 14:01:12 user Throughput exceed 20Gbps and 7Mpps in 35% of last 15 minutes, above the time threshold 10%!
+Apr 25 14:16:12 user Throughput exceed 20Gbps and 7Mpps in 95% of last 15 minutes, above the time threshold 10%!
